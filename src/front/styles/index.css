@@ -1,3 +1,8 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+.loginForm {
+    display: flex;
+    height: 400px;
+    width: 930px;
+}

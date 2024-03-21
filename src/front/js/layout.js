@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
@@ -10,9 +10,14 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { ContactCard } from "./component/contactcard.jsx";
+import { LoginPage } from "./component/login.jsx";
+
+export const AppContext = React.createContext(null)
 
 //create your first component
 const Layout = () => {
+    const [user, setUser] = useState({})
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
@@ -21,10 +26,13 @@ const Layout = () => {
 
     return (
         <div>
+            <AppContext.Provider value={{ user , setUser }}>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
+                        <Route element={<LoginPage />} path="/login" />
+                        <Route element={<ContactCard />} path="/contact" />
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
@@ -33,6 +41,7 @@ const Layout = () => {
                     <Footer />
                 </ScrollToTop>
             </BrowserRouter>
+            </AppContext.Provider>
         </div>
     );
 };
