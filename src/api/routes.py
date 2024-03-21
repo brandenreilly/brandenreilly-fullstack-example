@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Contact
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -32,11 +32,11 @@ def handle_get_user():
     user_info = request.json
     is_user = User.query.filter_by(email=user_info["email"]).first()
     if is_user:
-        if user_info["password"] == is_user["password"]:
+        if user_info["password"] == is_user.password:
             verified = is_user.serialize()
             return jsonify(verified), 200
         else:
-            return jsonify("INCORRECT PASSWORD"), 401
+            return jsonify("INCORRECT PASSWORD"), 403
     else:
         return jsonify("EMAIL NOT REGISTERED"), 401
 
@@ -54,3 +54,24 @@ def handle_create_user():
         get_user_info = find_new_user.serialize()
         return jsonify(get_user_info), 200
 
+@api.route('/contacts', methods=['GET'])
+def handle_get_all_contacts():
+    all_contacts = Contact.query.all()
+    list_all = list(map(lambda x: x.serialize(), all_contacts))
+    return jsonify(list_all), 200
+
+@api.route('/createcontact', methods=['POST'])
+def handle_create_contact():
+    sent_contact = request.json
+    new_contact = Contact(uid=sent_contact["uid"], full_name=sent_contact["full_name"], email=sent_contact["email"], address=sent_contact["address"], phone=sent_contact["phone"])
+    db.session.add(new_contact)
+    db.session.commit()
+    get_new_contact = Contact.query.filter_by(full_name=sent_contact["full_name"]).first()
+    listed = get_new_contact.serialize()
+    return jsonify(listed), "201 Contact Created"
+
+@api.route('/contacts/<uid>', methods=['GET'])
+def handle_get_user_contacts(uid):
+    filtered_contacts = Contact.query.filter_by(uid=uid)
+    users_contacts = list(map(lambda x: x.serialize(), filtered_contacts))
+    return jsonify(users_contacts), 200

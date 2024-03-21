@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../layout";
 
 export const LoginPage = () => {
-    const { user , setUser } = useContext(AppContext)
+    const { user , setUser , contacts, setContacts } = useContext(AppContext)
     const [emailInput, setEmailInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
 
@@ -24,12 +24,32 @@ export const LoginPage = () => {
                 return resp.json()
             }
             else{
-                return resp.status
+                if (resp.status == 403){
+                    alert("Incorrect password.")
+                    return resp.status
+                }
+                else if (resp.status == 401){
+                    alert("Email not found, please sign up.")
+                    return resp.status
+                }
             }
         })
         .then(data => setUser(data))
     }
 
+    const handleGetContacts = () => {
+        fetch(`https://jubilant-bassoon-699xr9r9gvgqcr779-3001.app.github.dev/api/contacts/${user.id}`)
+        .then(resp => {
+            if (resp.ok){
+                return resp.json()
+            }
+            else{
+                return resp.status
+            }
+        })
+        .then(data => setContacts(data))
+    }
+useEffect(()=>{handleGetContacts()},[user])
 
     return (
         <div className="d-flex justify-content-center align-items-center">
@@ -44,7 +64,7 @@ export const LoginPage = () => {
                     <input style={{width: "250px"}} id="password" type="password" value={passwordInput} onChange={(e) => { setPasswordInput(e.target.value) }} onKeyUp={(e) => { if (e.key === "Enter") { handleGetUser(); setPasswordInput(""); setUserInput("") } }} />
                 </div>
                 <div className="text-center mx-auto">
-                    <button className="mt-3 mb-5 btn btn-primary loginPageBtn" onClick={() => {setPasswordInput(""); setEmailInput("") }}>
+                    <button className="mt-3 mb-5 btn btn-primary loginPageBtn" onClick={() => {handleGetUser();setPasswordInput(""); setEmailInput("") }}>
                         Login
                     </button>
                 </div>

@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import MikePhoto from "../../img/m101.jpg"
 import { AppContext } from "../layout"
 
-export const ContactCard = () => {
+export const ContactCard = (props) => {
     const { user , setUser } = useContext(AppContext)
 
     return (
