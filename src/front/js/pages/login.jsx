@@ -5,6 +5,10 @@ export const LoginPage = () => {
     const { user , setUser , contacts, setContacts } = useContext(AppContext)
     const [emailInput, setEmailInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
+    const [signUpEmail, setSignUpEmail] = useState("")
+    const [signUpPassword, setSignUpPassword] = useState("")
+    const [visible, setVisible] = useState(false)
+
 
     const handleGetUser = () => {
         const options = {
@@ -35,6 +39,7 @@ export const LoginPage = () => {
             }
         })
         .then(data => setUser(data))
+        .then(()=>{setVisible(true)})
     }
 
     const handleGetContacts = () => {
@@ -51,8 +56,35 @@ export const LoginPage = () => {
     }
 useEffect(()=>{handleGetContacts()},[user])
 
+const handleSignUp = () => {
+    const options = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: signUpEmail,
+            password: signUpPassword,
+            is_active: false
+        })
+    }
+    fetch("https://jubilant-bassoon-699xr9r9gvgqcr779-3001.app.github.dev/api/createuser", options)
+    .then(resp => {
+        if (resp.ok) {
+            alert("Account Created")
+            return resp.json()
+        }
+        else {
+            return alert("Email already in use.")
+        }
+    })
+}
+
     return (
         <div className="d-flex justify-content-center align-items-center">
+            <div className="alert alert-success" style={{display: visible ? "" : "none"}}>
+                <p>Log in successful.</p>
+            </div>
             <div className="borderDiv">
                 <h1 className="mb-5 text-center d-flex justify-content-center align-items-center w-100">Login</h1>
                 <div className="text-center mb-2 mx-auto w-100 d-flex justify-content-center align-items-center" style={{ display: "block" }}>
@@ -79,16 +111,17 @@ useEffect(()=>{handleGetContacts()},[user])
         					<h5 className="modal-title" id="staticBackdropLabel">Create New User</h5>
         					<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       					</div>
-      					<div className="modal-body">
-        				    <label htmlFor="email">Email:</label>
-                            <input id="email"></input>
+      					<div className="modal-body text-center">
+                            <p>Please enter your email address and password to sign up, then proceed to log in.</p>
+        				    <label htmlFor="signUpEmail"><i className="fa-solid fa-at" style={{ width: "20px", height: "20px", marginRight: "10px" }}></i></label>
+                            <input type="text" id="signUpEmail" value={signUpEmail} onChange={(e)=>{setSignUpEmail(e.target.value)}}></input>
                             <br/>
-        				    <label htmlFor="password" >Password:</label>
-                            <input id="password" ></input>
+        				    <label htmlFor="signUpPassword" ><i className="fas fa-key" style={{ width: "20px", height: "20px", marginRight: "10px" }}></i></label>
+                            <input type="password" id="signUpPassword" value={signUpPassword} onChange={(e)=>{setSignUpPassword(e.target.value)}}></input>
       					</div>
       					<div className="modal-footer">
         					<button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        					<button type="button" className="btn btn-success" data-bs-dismiss="modal">Confirm</button>
+        					<button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={()=>{handleSignUp();setSignUpEmail("");setSignUpPassword("")}}>Confirm</button>
       					</div>
     				</div>
   				</div>

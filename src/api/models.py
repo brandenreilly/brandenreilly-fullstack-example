@@ -27,6 +27,7 @@ class Contact(db.Model):
     email = db.Column(db.String(120))
     address = db.Column(db.String(120))
     phone = db.Column(db.String(120))
+    relation = db.Column(db.String(120))
 
     def serialize(self):
         return {
@@ -36,4 +37,5 @@ class Contact(db.Model):
             "email": self.email,
             "address": self.address,
             "phone": self.phone,
+            "relation": self.relation
         }

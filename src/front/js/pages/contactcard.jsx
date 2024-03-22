@@ -7,11 +7,11 @@ export const ContactCard = (props) => {
     const { user , setUser , contacts , setContacts , setModalId } = useContext(AppContext)
 
     return (
-        <div>	
+        <div style={{marginTop: "5px"}}>	
 			<li className="list-group-item">
 				<div className="row w-100">
 					<div className="col-12 col-sm-6 col-md-3 px-0">
-						<img src={MikePhoto} alt="Mike Anamendolla" className="rounded-circle mx-auto d-block img-fluid" />
+						<img src={MikePhoto} style={{marginTop: "17px"}} alt="Mike Anamendolla" className="rounded-circle mx-auto d-block img-fluid" />
 					</div>
 					<div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
 						<div className=" float-right">
@@ -44,6 +44,14 @@ export const ContactCard = (props) => {
 							title=""
 						/>
 						<span className="text-muted small text-truncate">{props.contact.email}</span>
+						<br />
+						<span
+							className="fa fa-user fa-fw text-muted mr-3"
+							data-toggle="tooltip"
+							data-original-title=""
+							title=""
+						/>
+						<span className="text-muted small text-truncate">{props.contact.relation}</span>
 					</div>
 				</div>
 			</li>

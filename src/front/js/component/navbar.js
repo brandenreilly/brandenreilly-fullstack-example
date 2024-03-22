@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 export const Navbar = () => {
 	return (
 		<nav className="navbar">
-			<div className="container">
+			<div className="container d-flex justify-content-between">
 				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
+					<span className="navbar-brand mb-auto h1">Home</span>
 				</Link>
-				<div>
+				<div className="">
 					<Link to={"/contacts"}>
 					<a style={{textDecoration: "none", color: "black"}}><h1>Contacts</h1></a>
 					</Link>
@@ -25,3 +25,4 @@ export const Navbar = () => {
 		</nav>
 	);
 };
+ 

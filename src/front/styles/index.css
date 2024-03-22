@@ -6,3 +6,28 @@
     height: 400px;
     width: 930px;
 }
+.createInput {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    transform: translateX(-50px);
+}
+.createInputLabel {
+    margin-right: 10px;
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+.createContactForm {
+    width: 580;
+    height: 500px;
+    padding-top: 100px;
+    border: 1px solid rgb(202, 202, 202);
+    margin-top: 20px;
+}
+.createButton {
+    margin-top: 25px;
+}
+.alertMsg:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

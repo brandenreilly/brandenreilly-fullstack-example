@@ -67,7 +67,7 @@ def handle_create_contact():
     if already_exists:
         return jsonify("CONTACT WITH THIS EMAIL ALREADY EXISTS"), 409
     else:
-        new_contact = Contact(uid=sent_contact["uid"], full_name=sent_contact["full_name"], email=sent_contact["email"], address=sent_contact["address"], phone=sent_contact["phone"])
+        new_contact = Contact(uid=sent_contact["uid"], full_name=sent_contact["full_name"], email=sent_contact["email"], address=sent_contact["address"], phone=sent_contact["phone"], relation=sent_contact["relation"])
         db.session.add(new_contact)
         db.session.commit()
         get_new_contact = Contact.query.filter_by(full_name=sent_contact["full_name"]).first()
