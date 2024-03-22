@@ -69,9 +69,30 @@ useEffect(()=>{handleGetContacts()},[user])
                     </button>
                 </div>
                 <div className="text-center mx-auto">
-                        <a href="/"><strong>New user? Click here to sign up.</strong></a>      
+                        <a data-bs-toggle="modal" data-bs-target="#signUpModal"><strong>New user? Click here to sign up.</strong></a>      
                 </div>
             </div>
+            <div className="modal fade" id="signUpModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel">
+  				<div className="modal-dialog">
+    				<div className="modal-content">
+      					<div className="modal-header">
+        					<h5 className="modal-title" id="staticBackdropLabel">Create New User</h5>
+        					<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      					</div>
+      					<div className="modal-body">
+        				    <label htmlFor="email">Email:</label>
+                            <input id="email"></input>
+                            <br/>
+        				    <label htmlFor="password" >Password:</label>
+                            <input id="password" ></input>
+      					</div>
+      					<div className="modal-footer">
+        					<button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        					<button type="button" className="btn btn-success" data-bs-dismiss="modal">Confirm</button>
+      					</div>
+    				</div>
+  				</div>
+			</div>
         </div>
     )
 }

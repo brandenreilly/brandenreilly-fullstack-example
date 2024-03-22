@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Navbar = () => {
 	return (
-		<nav className="navbar navbar-light bg-light">
+		<nav className="navbar">
 			<div className="container">
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
@@ -15,7 +15,7 @@ export const Navbar = () => {
 				</div>
 				<div className="ml-auto">
 					<Link to="/login">
-						<button className="btn btn-primary">LOG IN</button>
+						<button className="btn btn-dark"><i className="fa-solid fa-user"></i>LOG IN</button>
 					</Link>
 					<Link to={"/createcontact"}>
 						<button className="btn btn-primary">Create Contact</button>
