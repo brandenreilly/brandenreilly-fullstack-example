@@ -63,15 +63,47 @@ def handle_get_all_contacts():
 @api.route('/createcontact', methods=['POST'])
 def handle_create_contact():
     sent_contact = request.json
-    new_contact = Contact(uid=sent_contact["uid"], full_name=sent_contact["full_name"], email=sent_contact["email"], address=sent_contact["address"], phone=sent_contact["phone"])
-    db.session.add(new_contact)
-    db.session.commit()
-    get_new_contact = Contact.query.filter_by(full_name=sent_contact["full_name"]).first()
-    listed = get_new_contact.serialize()
-    return jsonify(listed), "201 Contact Created"
+    already_exists = Contact.query.filter_by(email=sent_contact["email"], uid=sent_contact["uid"]).first()
+    if already_exists:
+        return jsonify("CONTACT WITH THIS EMAIL ALREADY EXISTS"), 409
+    else:
+        new_contact = Contact(uid=sent_contact["uid"], full_name=sent_contact["full_name"], email=sent_contact["email"], address=sent_contact["address"], phone=sent_contact["phone"])
+        db.session.add(new_contact)
+        db.session.commit()
+        get_new_contact = Contact.query.filter_by(full_name=sent_contact["full_name"]).first()
+        listed = get_new_contact.serialize()
+        return jsonify(listed), 200
 
 @api.route('/contacts/<uid>', methods=['GET'])
 def handle_get_user_contacts(uid):
     filtered_contacts = Contact.query.filter_by(uid=uid)
     users_contacts = list(map(lambda x: x.serialize(), filtered_contacts))
     return jsonify(users_contacts), 200
+
+@api.route('/contacts/get/<id>', methods=['GET'])
+def handle_get_edit_user(id):
+    contact_to_be_edited = Contact.query.filter_by(id=id).first()
+    to_send = contact_to_be_edited.serialize()
+    return jsonify(to_send), 200
+
+@api.route('/contacts/edit/<id>', methods=['PUT'])
+def handle_edit_user(id):
+    sent_contact = request.json
+    contact = Contact.query.filter_by(id=id).first()
+    contact.full_name = sent_contact["full_name"]
+    contact.email = sent_contact["email"]
+    contact.address = sent_contact["address"]
+    contact.phone = sent_contact["phone"]
+    db.session.commit()
+    new_contact = Contact.query.filter_by(id=id).first()
+    to_send = new_contact.serialize()
+    return jsonify(to_send), 200
+
+@api.route('/contacts/delete/<uid>/<id>', methods=['DELETE'])
+def handle_delete_contact(uid , id):
+    find_contact = Contact.query.filter_by(id=id).first()
+    db.session.delete(find_contact)
+    db.session.commit()
+    get_new_contacts_list = Contact.query.filter_by(uid=uid)
+    listed = (list(map(lambda x: x.serialize(), get_new_contacts_list)))
+    return jsonify(listed), 200

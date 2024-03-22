@@ -9,13 +9,16 @@ export const Navbar = () => {
 					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
 				</Link>
 				<div>
-					<Link to={"/"}>
+					<Link to={"/contacts"}>
 					<a style={{textDecoration: "none", color: "black"}}><h1>Contacts</h1></a>
 					</Link>
 				</div>
 				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary"></button>
+					<Link to="/login">
+						<button className="btn btn-primary">LOG IN</button>
+					</Link>
+					<Link to={"/createcontact"}>
+						<button className="btn btn-primary">Create Contact</button>
 					</Link>
 				</div>
 			</div>
