@@ -31,3 +31,7 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.homePageDiv{
+    border-left: 1px solid rgb(204, 203, 203);
+    border-bottom: 1px solid rgb(204, 203, 203);
+}

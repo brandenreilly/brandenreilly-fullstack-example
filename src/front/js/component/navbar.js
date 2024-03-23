@@ -10,7 +10,7 @@ export const Navbar = () => {
 				</Link>
 				<div className="">
 					<Link to={"/contacts"}>
-					<a style={{textDecoration: "none", color: "black"}}><h1>Contacts</h1></a>
+					<h1 style={{textDecoration: "none", color: "black"}}>Contacts</h1>
 					</Link>
 				</div>
 				<div className="ml-auto">

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
 
 export const Home = () => {
@@ -8,20 +7,15 @@ export const Home = () => {
 
 	return (
 		<div className="home-container-body">
-			<div className="text-center mt-5">
-				<h1>Contact List WebApp</h1>	
-				<p>	
-					<img src={rigoImageUrl} />
-				</p>
-				<div className="alert alert-info">
-					{store.message || "Loading message from the backend (make sure your python backend is running)..."}
+			<div className="row">
+				<div className="col-4 text-center mt-3">
+					<img style={{height: "200px" , width: "200px"}} src="https://cdn.icon-icons.com/icons2/3106/PNG/512/communication_contact_address_book_contacts_icon_191613.png" alt="contact-icon" />
 				</div>
-				<p>
-					This boilerplate comes with lots of documentation:{" "}
-					<a href="https://start.4geeksacademy.com/starters/react-flask">
-						Read documentation
-					</a>
-				</p>
+				<div className="col-8 d-flex align-items-center homePageDiv">
+					<div className="row">
+						<h1 className="" style={{marginLeft: "40px"}}>Contact List</h1>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

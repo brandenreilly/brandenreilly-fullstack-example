@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../layout";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
     const { user , setUser , contacts, setContacts } = useContext(AppContext)
@@ -8,6 +9,7 @@ export const LoginPage = () => {
     const [signUpEmail, setSignUpEmail] = useState("")
     const [signUpPassword, setSignUpPassword] = useState("")
     const [visible, setVisible] = useState(false)
+    const navigate = useNavigate()
 
 
     const handleGetUser = () => {
@@ -40,6 +42,7 @@ export const LoginPage = () => {
         })
         .then(data => setUser(data))
         .then(()=>{setVisible(true)})
+        .then(()=>{setTimeout(navigate('/contacts'), 20000)})
     }
 
     const handleGetContacts = () => {
@@ -81,9 +84,9 @@ const handleSignUp = () => {
 }
 
     return (
-        <div className="d-flex justify-content-center align-items-center">
+        <div className="justify-content-center text-center align-items-center">
             <div className="alert alert-success" style={{display: visible ? "" : "none"}}>
-                <p>Log in successful.</p>
+                <p>Log in successful. Redirecting you in 10 seconds.</p>
             </div>
             <div className="borderDiv">
                 <h1 className="mb-5 text-center d-flex justify-content-center align-items-center w-100">Login</h1>
