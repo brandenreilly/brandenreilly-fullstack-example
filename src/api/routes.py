@@ -107,3 +107,15 @@ def handle_delete_contact(uid , id):
     get_new_contacts_list = Contact.query.filter_by(uid=uid)
     listed = (list(map(lambda x: x.serialize(), get_new_contacts_list)))
     return jsonify(listed), 200
+
+@api.route('/contacts/search', methods=['POST'])
+def handle_search_contacts():
+    recieved_name = request.json["name"]
+    recieved_uid = request.json["uid"]
+    search = "%{}%".format(recieved_name)
+    find_contacts = Contact.query.filter(Contact.full_name.ilike(search), Contact.uid == recieved_uid).all()
+    if find_contacts:
+        list_contacts = list(map(lambda x: x.serialize(), find_contacts))
+        return jsonify(list_contacts), 200
+    else:
+        return jsonify("No records found"), 404

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../layout";
 import { ContactCard } from "./contactcard.jsx";
@@ -6,6 +6,9 @@ import { ContactCard } from "./contactcard.jsx";
 
 export const ContactPage = () => {
     const { user , setUser , contacts , setContacts , modalId } = useContext(AppContext)
+	const [searchInput, setSearchInput] = useState("")
+	const [searchResult, setSearchResult] = useState()
+	const [visible, setVisible] = useState(false)
 
     const handle_get_contacts = () => {
         fetch(`https://jubilant-bassoon-699xr9r9gvgqcr779-3001.app.github.dev/api/contacts/${user.id}`)
@@ -21,13 +24,49 @@ export const ContactPage = () => {
 		.then(resp => resp.json())
 		.then(data => setContacts(data))
 	}
+	const handleSearch = (input) => {
+		if (input == " " || input == ""){
+			setSearchResult()
+			console.log()
+		}
+		else{
+			const options = {
+				method: 'POST',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					name: searchInput,
+					uid: user.id
+				})
+			}
+			fetch("https://jubilant-bassoon-699xr9r9gvgqcr779-3001.app.github.dev/api/contacts/search", options)
+			.then(resp => {
+				if(resp.ok){
+					return resp.json()
+				}
+				else if(resp.status == 404){
+					setVisible(true)
+				}
+			})
+			.then(data => setSearchResult(data))
+		}
+	}
 
     return (
         <div className="container">
-            {contacts.length > 0 && contacts.map((contact, index)=>{
+			<label htmlFor="searchBar"></label>
+			<input type="text" name="searchBar" id="searchBar" value={searchInput} onChange={(e)=>{setSearchInput(e.target.value);handleSearch(e.target.value)}}></input>
+            {!searchResult && contacts.length > 0 && contacts.map((contact, index)=>{
                 return <ContactCard key={index} contact={contact} index={index} />
             })}
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel">
+			{searchResult && searchResult.length > 0 && searchResult.map((contact, index)=>{
+				return <ContactCard key={index} contact={contact} index={index}/>
+			})}
+			{/* {contacts.length > 0 && contacts.map((contact, index)=>{
+                return <ContactCard key={index} contact={contact} index={index} />
+            })}
+             */}<div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel">
   				<div className="modal-dialog">
     				<div className="modal-content">
       					<div className="modal-header">
